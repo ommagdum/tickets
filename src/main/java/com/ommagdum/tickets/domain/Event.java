@@ -31,7 +31,7 @@ public class Event {
     @Column(name = "start")
     private LocalDateTime start;
 
-    @Column(name = "end")
+    @Column(name = "end_time")
     private LocalDateTime end;
 
     @Column(name = "venue", nullable = false)
