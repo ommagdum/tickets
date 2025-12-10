@@ -1,6 +1,6 @@
 package com.ommagdum.tickets.filters;
 
-import com.ommagdum.tickets.domain.User;
+import com.ommagdum.tickets.domain.entities.User;
 import com.ommagdum.tickets.repositories.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

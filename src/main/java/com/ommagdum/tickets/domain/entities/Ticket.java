@@ -1,4 +1,4 @@
-package com.ommagdum.tickets.domain;
+package com.ommagdum.tickets.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
