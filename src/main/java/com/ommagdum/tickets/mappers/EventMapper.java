@@ -2,10 +2,9 @@ package com.ommagdum.tickets.mappers;
 
 import com.ommagdum.tickets.domain.CreateEventRequest;
 import com.ommagdum.tickets.domain.CreateTicketTypeRequest;
-import com.ommagdum.tickets.domain.dto.CreateEventRequestDto;
-import com.ommagdum.tickets.domain.dto.CreateEventResponseDto;
-import com.ommagdum.tickets.domain.dto.CreateTicketTypeRequestDto;
+import com.ommagdum.tickets.domain.dto.*;
 import com.ommagdum.tickets.domain.entities.Event;
+import com.ommagdum.tickets.domain.entities.TicketType;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
@@ -17,5 +16,9 @@ public interface EventMapper {
     CreateEventRequest fromDto(CreateEventRequestDto dto);
 
     CreateEventResponseDto toDto(Event event);
+
+    ListEventTicketTypeResponseDto toDto(TicketType ticketType);
+
+    ListEventResponseDto toListEventResponseDto(Event event);
 
 }
