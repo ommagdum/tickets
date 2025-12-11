@@ -3,6 +3,7 @@ package com.ommagdum.tickets.controllers;
 import com.ommagdum.tickets.domain.CreateEventRequest;
 import com.ommagdum.tickets.domain.dto.CreateEventRequestDto;
 import com.ommagdum.tickets.domain.dto.CreateEventResponseDto;
+import com.ommagdum.tickets.domain.dto.GetEventDetailsResponseDto;
 import com.ommagdum.tickets.domain.dto.ListEventResponseDto;
 import com.ommagdum.tickets.domain.entities.Event;
 import com.ommagdum.tickets.mappers.EventMapper;
@@ -49,6 +50,18 @@ public class EventController {
         return ResponseEntity.ok(
                 events.map(eventMapper::toListEventResponseDto)
         );
+    }
+
+    @GetMapping("/{eventId}")
+    public ResponseEntity<GetEventDetailsResponseDto> getEvent(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID eventId
+    ) {
+        UUID userId = parseUserId(jwt);
+        return eventService.getEventForOrganizer(userId, eventId)
+                .map(eventMapper::toGetEventDetailsResponseDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     private UUID parseUserId(Jwt jwt) {
