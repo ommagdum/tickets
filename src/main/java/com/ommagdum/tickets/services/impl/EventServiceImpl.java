@@ -4,6 +4,7 @@ import com.ommagdum.tickets.domain.CreateEventRequest;
 import com.ommagdum.tickets.domain.UpdateEventRequest;
 import com.ommagdum.tickets.domain.UpdateTicketTypeRequest;
 import com.ommagdum.tickets.domain.entities.Event;
+import com.ommagdum.tickets.domain.entities.EventStatusEnum;
 import com.ommagdum.tickets.domain.entities.TicketType;
 import com.ommagdum.tickets.domain.entities.User;
 import com.ommagdum.tickets.exceptions.EventNotFoundException;
@@ -138,5 +139,10 @@ public class EventServiceImpl implements EventService {
     @Transactional
     public void deleteEventForOrganizer(UUID organizerId, UUID id) {
         getEventForOrganizer(organizerId, id).ifPresent(eventRepository::delete);
+    }
+
+    @Override
+    public Page<Event> listPublishedEvents(Pageable pageable) {
+        return eventRepository.findByStatus(EventStatusEnum.PUBLISHED, pageable);
     }
 }
