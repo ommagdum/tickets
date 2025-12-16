@@ -1,10 +1,8 @@
 package com.ommagdum.tickets.controllers;
 
 import com.ommagdum.tickets.domain.CreateEventRequest;
-import com.ommagdum.tickets.domain.dto.CreateEventRequestDto;
-import com.ommagdum.tickets.domain.dto.CreateEventResponseDto;
-import com.ommagdum.tickets.domain.dto.GetEventDetailsResponseDto;
-import com.ommagdum.tickets.domain.dto.ListEventResponseDto;
+import com.ommagdum.tickets.domain.UpdateEventRequest;
+import com.ommagdum.tickets.domain.dto.*;
 import com.ommagdum.tickets.domain.entities.Event;
 import com.ommagdum.tickets.mappers.EventMapper;
 import com.ommagdum.tickets.services.EventService;
@@ -39,6 +37,21 @@ public class EventController {
         Event createdEvent = eventService.createEvent(userId, createEventRequest);
         CreateEventResponseDto createEventResponseDto = eventMapper.toDto(createdEvent);
         return new ResponseEntity<>(createEventResponseDto, HttpStatus.CREATED);
+    }
+
+    @PutMapping(path = "/{eventId}")
+    public ResponseEntity<UpdateEventResponseDto> updateEvent(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID eventId,
+            @Valid @RequestBody UpdateEventRequestDto updateEventRequestDto
+    ) {
+        UpdateEventRequest updateEventRequest = eventMapper.fromDto(updateEventRequestDto);
+        UUID userId = parseUserId(jwt);
+
+        Event updatedEvent = eventService.updateEventForOrganizer(userId, eventId, updateEventRequest);
+
+        UpdateEventResponseDto updateEventResponseDto = eventMapper.toUpdateEventResponseDto(updatedEvent);
+        return ResponseEntity.ok(updateEventResponseDto);
     }
 
     @GetMapping
