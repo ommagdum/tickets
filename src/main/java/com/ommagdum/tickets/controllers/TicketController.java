@@ -1,5 +1,6 @@
 package com.ommagdum.tickets.controllers;
 
+import com.ommagdum.tickets.domain.dto.GetTicketResponseDto;
 import com.ommagdum.tickets.domain.dto.ListTicketResponseDto;
 import com.ommagdum.tickets.mappers.TicketMapper;
 import com.ommagdum.tickets.services.TicketService;
@@ -10,8 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 import static com.ommagdum.tickets.util.JwtUtil.parseUserId;
 
@@ -32,5 +36,18 @@ public class TicketController {
                 parseUserId(jwt),
                 pageable
         ).map(ticketMapper::toListTicketResponseDto);
+    }
+
+    @GetMapping(path = "/{ticketId}")
+    public ResponseEntity<GetTicketResponseDto> getTicket(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID ticketId)
+    {
+        return ticketService.getTicketForUser(
+                parseUserId(jwt),
+                ticketId
+        ).map(ticketMapper::toGetTicketResponseDto)
+                .map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+
     }
 }
