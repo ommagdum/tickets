@@ -32,7 +32,7 @@ public class TicketTypeServiceImpl implements TicketTypeService {
                 String.format("User with ID: '%s' was not found.", userId)
         ));
 
-        TicketType ticketType = ticketTypeRepository.findById(ticketTypeId).orElseThrow(
+        TicketType ticketType = ticketTypeRepository.findByIdWithLock(ticketTypeId).orElseThrow(
                 () -> new TicketTypeNotFoundException(
                         String.format("TicketType with ID: '%s' was not found.", ticketTypeId)
                 )
